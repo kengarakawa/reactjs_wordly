@@ -1,4 +1,5 @@
-import { createStore , combineReducers , applyMiddleware} from 'redux'
+import { createStore , combineReducers , applyMiddleware } from 'redux'
+import { composeWithDevTools } from '@redux-devtools/extension';
 import thunk from 'redux-thunk'
 
 import { gameStateReducer } from './reducers/GameStateReducer';
@@ -13,15 +14,27 @@ const initialStates = {
     game: {
         gameIsOver : false ,
         isWon : false ,
-        guesses : Array(maxGuess)        
+        // guesses : Array(maxGuess)        
+        guesses :  [ [] , [] , [] , [] , [] ] ,
+        guessIndex : 0 ,
+        subject : null ,
+        maxGuesses : 6 
+        
     }    
 }
+
+const composeEnhancers = composeWithDevTools({
+    // Specify name here, actionsDenylist, actionsCreators and other options if needed
+    trace: true, traceLimit: 25
+  });
+  
+  
 const middleware = [thunk] 
 
 const store = createStore(
     reducer , 
     initialStates , 
-    applyMiddleware(...middleware)        
+    composeEnhancers( applyMiddleware(...middleware))
 )
 
 export default store

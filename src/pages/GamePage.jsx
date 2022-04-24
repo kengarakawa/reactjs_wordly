@@ -1,64 +1,72 @@
-import React, { useState , useRef } from "react"
+import React, {  useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+
+import { GAME_STATE_RESET } from "./../constants/gameStateConstants"
+
 import WordLine from "./../components/WordLine"
+import InputBox from "./../components/InputBox"
+import GameOver from './../components/GameOver';
 
 const GamePage = () => {
-  console.log('rerender')
-  const maxGuesses = 6
-  const wordLength = 5
-  let temp = Array(maxGuesses).fill(1)
-  temp = temp.map((i) => Array(wordLength).fill(null))
+  const dispatch = useDispatch()
+  const game = useSelector((state) => state.game)
+  const subject = game.subject
+  
+  // console.log('Pre- useEffect')
 
-  const [guesses, setGuesses] = useState(temp)
-  const [guess, setGuess] = useState('')
-  
-  const [errorMessage, setErrorMessage] = useState('')
-
-  /*const changeGuess = (e) => {
-    console.log('preventing submit?')
-    e.preventDefault()  
-    setGuess(e.target.value)    
-  }*/
-  
-  const textRef = useRef()
-  
-  const detectSubmit = (e) => {    
-    
-    if (e.key === "Enter") {
-      e.preventDefault()
-      console.log("Enter being pressed")
+  useEffect(() => {    
+    if (game.subject === undefined || game.subject === null) {
       
-      console.warn(textRef.current.value)
-      console.warn(textRef.current.value.length)
-      
-      if(textRef.current.value.lenght !== 5 ) {
-          setErrorMessage('Should be 5-characters word.')
-      } else {
-        console.error(textRef.current.value.length)
-          console.log('me?')
-          setErrorMessage('')
-      }
-      
-      console.log(textRef.current.value)
-      return false 
+      // console.log('dispatch, randomWord')
+      dispatch({
+        type: GAME_STATE_RESET,        
+      })
     }
-  }
+  })
 
-  // console.log(guesses.length)
+  // const maxGuesses = 6
+  // const wordLength = 5
+  // let temp = Array(maxGuesses).fill(1)
+  // temp = temp.map((i) => Array(wordLength).fill(null))
+
+  
+
+  const resetHandler = (dispatch) => {
+    // console.log("RESETING!") 
+    if(window.confirm('Starting over?'))    {
+      dispatch({
+        type: GAME_STATE_RESET,      
+      })  
+    }
+    
+  }
 
   return (
     <div>
-      <h1>GamePage</h1>
-      
-      
-      <h1 style={{fontSize:30 , color:'red'}} >{errorMessage}</h1>
+      <div className="game-header" >
+        <h1>Wordly</h1>
+        <button style={{ color: "red" , fontWeight:'bold' }} onClick={() => resetHandler(dispatch)}>
+          Reset
+        </button>
+      </div>
 
-      <input ref={textRef} type="text" onKeyDown={detectSubmit}  maxLength="5" autoFocus />
-      {guess}
-      <hr />
-      {guesses.length}
-      {guesses.map((guess, k) => (
-        <WordLine guessString={"guess"} key={k} />
-      ))}
+      <div style={{ backgroundColor: "black" }}>{subject}</div>
+      <br />
+
+          
+      {game.guesses.map((guess, k) =>
+        guess instanceof Array ? (
+          <span key={k}></span>
+        ) : (
+          <WordLine guessString={guess} key={k} />
+        )
+      )}
+            
+      { game.guessIndex < game.maxGuesses && !game.gameIsOver && <InputBox />}
+      
+      { game.gameIsOver && <GameOver />}
+      
+      
     </div>
   )
 }
