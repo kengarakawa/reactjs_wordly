@@ -17,7 +17,7 @@ const GameOver = () => {
     <div className="gameover-modal">
         
         <div className="gameover-content">
-            <div><b>GameOver : { game.isWon ? 'You won' : 'You lose'}</b>    </div>
+            <div><b>GameOver : { game.isWon ? 'You won' : `You lose - answer ${game.subject}`}</b>    </div>
             
             
             <div><button onClick={resetHandler}>Start Over</button></div>
