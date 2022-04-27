@@ -1,3 +1,4 @@
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css'
 
 import GamePage from './pages/GamePage';

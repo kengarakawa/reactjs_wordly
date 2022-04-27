@@ -4,21 +4,19 @@ import {useDispatch ,useSelector} from  'react-redux'
 import {
   GAME_STATE_SET_GUESS , 
   GAME_STATE_SET_ERROR ,
-  // GAME_STATE_SET_GAMEOVER_WIN ,
-  // GAME_STATE_SET_GAMEOVER_LOSE , 
 } from '../constants/gameStateConstants'
 
 import { validateWord , noRepeatingCharacters } from './../services/validateWord';
 // import { maxGuesses } from './../reducers/GameStateReducer';
 
 
-const InputBox = () => {
+const InputBox = ({keyDownHandler}) => {
     
   const game = useSelector( (state) => state.game)  
   const dispatch = useDispatch()
   const textboxRef = useRef()
     
-  const handleKeyDown = (e) => {
+  /* const handleKeyDown = (e) => {
     
     if(e.key === 'Enter') {
       // console.log(e.currentTarget.value )
@@ -67,6 +65,7 @@ const InputBox = () => {
     
     
   }
+  */
   
   
   let guessRemaining = 6 - game.guessIndex ?? 0
@@ -80,11 +79,16 @@ const InputBox = () => {
       <input
         type="text"
         style={{ size: 5, fontSize: 30}}
-        onKeyDown={handleKeyDown}
+        // _onKeyDown={handleKeyDown}
+        onKeyDown={(e) => { 
+          keyDownHandler(e)
+          // reset
+          //e.currentTarget.value = ""
+        }}
         maxLength="5"
-        ref={textboxRef}
+        // ref={textboxRef}
       />
-      { game.error && <div className="error">{game.error}</div>}
+      { false && game.error && <div className="error">{game.error}</div>}
     </div>
   )
 }
