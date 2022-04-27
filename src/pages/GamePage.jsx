@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import {
   GAME_STATE_RESET,
   GAME_STATE_SET_GUESS,
-  GAME_STATE_SET_ERROR,
+  
 } from "./../constants/gameStateConstants"
 
 import { validateWord, noRepeatingCharacters } from "./../services/validateWord"
@@ -18,8 +18,7 @@ import GameOver from "./../components/GameOver"
 
 
 const GamePage = () => {
-  
-  const toastMessageId = 'toastMessage'
+    
   
   const dispatch = useDispatch()
   const game = useSelector((state) => state.game)

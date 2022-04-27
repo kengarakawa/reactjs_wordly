@@ -1,20 +1,10 @@
 import React from "react"
-import { useRef } from 'react'
-import {useDispatch ,useSelector} from  'react-redux'
-import {
-  GAME_STATE_SET_GUESS , 
-  GAME_STATE_SET_ERROR ,
-} from '../constants/gameStateConstants'
-
-import { validateWord , noRepeatingCharacters } from './../services/validateWord';
-// import { maxGuesses } from './../reducers/GameStateReducer';
+import {useSelector} from  'react-redux'
 
 
 const InputBox = ({keyDownHandler}) => {
     
   const game = useSelector( (state) => state.game)  
-  const dispatch = useDispatch()
-  const textboxRef = useRef()
     
   /* const handleKeyDown = (e) => {
     
